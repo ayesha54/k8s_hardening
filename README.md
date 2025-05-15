@@ -1,26 +1,26 @@
 # k8s_hardening
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
   name: secure-app
 spec:
   securityContext:
-    runAsUser: 1000
-    runAsGroup: 3000
-    fsGroup: 2000
-    runAsNonRoot: true
-    seccompProfile:
-      type: RuntimeDefault
+    runAsUser: 1000                  # Run as non-root user
+    runAsGroup: 3000                 # Assign a group
+    fsGroup: 2000                    # For volumes, gives group ownership
+    runAsNonRoot: true               # Enforce non-root execution
+    seccompProfile:                  # Seccomp (short for Secure Computing Mode) is a Linux kernel feature that restricts the system calls (syscalls) a process can make.
+      type: RuntimeDefault           # Use default seccomp profile
   containers:
   - name: app-container
     image: myapp:latest
     securityContext:
-      allowPrivilegeEscalation: false
+      allowPrivilegeEscalation: false   # Prevent privilege escalation
       capabilities:
         drop:
-          - ALL
+          - ALL                         # Drop all Linux capabilities
         add:
           - NET_ADMIN              # Adds capability to manage networking
       readOnlyRootFilesystem: true
