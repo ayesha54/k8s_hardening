@@ -13,7 +13,6 @@ spec:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
-
   containers:
   - name: app-container
     image: myapp:latest
