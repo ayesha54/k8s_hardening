@@ -25,3 +25,23 @@ spec:
           - NET_ADMIN              # Adds capability to manage networking
       readOnlyRootFilesystem: true
 ```
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-backend-traffic
+  namespace: my-namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend
+  egress: []
+```
